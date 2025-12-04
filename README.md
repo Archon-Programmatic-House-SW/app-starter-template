@@ -10,7 +10,7 @@ By using this template, your service **automatically inherits a secure, standard
 ### 1️⃣ Create Your Repository
 
 1. Click **Use this template → Create a new repository (select organization not personal account)**.
-2. Name your repo (e.g., `user-service`, `payment-api`).
+2. Name your repo (e.g., `celebrity-api`, `car-api`).
 
 ### 2️⃣ Configure Your Service
 
@@ -43,7 +43,7 @@ Update:
 Update:
 
 * `service_name`
-* `project_id` (Prod usually lives in a separate GCP project)
+* `project_id` (archonunity-prod)
 * `runtime_service_account` (Prod services use dedicated identities)
 
 ---
@@ -81,7 +81,7 @@ This repository includes **three workflows** that work together in a full CI/CD 
 * You choose the release type → **patch / minor / major**
 * Calculates the next semantic version
 * Creates the git tag (e.g., `v1.2.0`)
-* Pushes the tag using the organization token `GH_PAT_TAG`
+* Pushes the tag using the organization token `GH_PAT_TAG` (Right now created with my own account will be updated to organization bot account)
 
 The **pushed tag automatically triggers the Production Release workflow**.
 
@@ -89,7 +89,7 @@ The **pushed tag automatically triggers the Production Release workflow**.
 
 ## 3. Production Release (`prod-release.yml`)
 
-**Runs when:** Any tag starting with `v*` is pushed.
+**Runs when:** Any tag starting with `v*` is pushed. ( When manually create-release-tag.yml workflow triggered)
 
 ### What it does:
 
@@ -109,9 +109,10 @@ This template relies on **Organization-Level Secrets** managed by DevOps:
 | ---------------------- | ----- | -------------------------------------------------                                                               |
 | `ORG_WIF_PROVIDER`     | Org   | Connects GitHub to GCP via WIF (no keys).                                                                       |
 | `ORG_CI_BUILDER_EMAIL` | Org   | Service Account used for CI/CD build & deploy.                                                                  |
-| `GH_PAT_TAG`           | Org   | Token used to push version tags and trigger Prod. (For now created with personal account will be chnaged later) |
+| `GH_PAT_TAG`           | Org   | Token used to push version tags and trigger Prod. |
 
 > You normally **don’t need repo-level secrets**, If needed add secrets to your repo. Repo level secrets will override organizational level secrets.
+> Organizaton secrets belong to archonunity-staging right now will be updated later
 
 ---
 
