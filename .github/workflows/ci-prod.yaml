@@ -1,0 +1,39 @@
+name: Production Release
+
+on:
+  # Trigger on Release Tags (e.g., v1.0.0)
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  # JOB 1: Verification check logic will be added here right now optional for every developer
+  verify-release:
+    name: Verify Release Integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Changelog
+        run: echo "Checking if changelog exists..."
+
+  # JOB 2: Call the Gold Path Template for Production
+  deploy-prod:
+    needs: verify-release # WAIT for verify release to pass
+    # Reference the central repo: owner/repo/path/filename@ref
+    uses: Archon-Programmatic-House-SW/devops-templates/.github/workflows/reusable-deploy.yaml@main
+    with:
+      environment: production
+      service_name: test-service
+      project_id: omer-playground-440310
+      region: europe-west3
+      registry_name: archon-unity
+      # Runtime service account 
+      runtime_service_account: "backend-runtime@archonunity-dev.iam.gserviceaccount.com"
+      # Dynamic Environment Variables needs to be configured by developer
+      # env_vars: |
+        # ENVIRONMENT=Development
+        # LOG_LEVEL=Debug
+    secrets:
+      # Pass the Organization Level Secrets
+      WIF_PROVIDER: ${{ secrets.ORG_WIF_PROVIDER }}
+      CI_SERVICE_ACCOUNT: ${{ secrets.ORG_CI_BUILDER_EMAIL }}
