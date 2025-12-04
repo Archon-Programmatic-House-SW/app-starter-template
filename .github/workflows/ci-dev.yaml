@@ -34,7 +34,7 @@ jobs:
   deploy-dev:
     needs: test-and-verify # WAIT for tests to pass
     # Reference the central repo: owner/repo/path/filename@ref
-    uses: my-org/devops-templates/.github/workflows/reusable-deploy.yaml@main
+    uses: Archon-Programmatic-House-SW/devops-templates/.github/workflows/reusable-deploy.yaml@main
     with:
       environment: development
       service_name: test-service
@@ -44,9 +44,9 @@ jobs:
       # Runtime service account 
       runtime_service_account: "backend-runtime@archonunity-dev.iam.gserviceaccount.com"
       # Dynamic Environment Variables needs to be configured by developer
-      env_vars: |
-        ENVIRONMENT=Development
-        LOG_LEVEL=Debug
+      # env_vars: |
+        # ENVIRONMENT=Development
+        # LOG_LEVEL=Debug
     secrets:
       # Pass the Organization Level Secrets
       WIF_PROVIDER: ${{ secrets.ORG_WIF_PROVIDER }}
