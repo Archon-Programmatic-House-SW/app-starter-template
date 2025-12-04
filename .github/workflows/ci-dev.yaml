@@ -1,0 +1,53 @@
+name: Development Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  # JOB 1: Language Specific Testing
+  # This runs LOCALLY in the runner. If this fails, Deployment is skipped.
+
+  # This logic is owned by the App Team, every developer can add its own testing logic.
+  # This allows Python teams to run pytest and Java teams to run Maven
+  # without changing the global infrastructure template.
+  
+  test-and-verify:
+    name: Unit Tests & Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+     # Example: Setup logic specific to this app
+      # - uses: actions/setup-dotnet@v3
+      #   with:
+      #     dotnet-version: '8.0'
+
+      # Example: Run Tests
+      # - name: Test with Coverage
+      #   run: |
+      #     dotnet test /p:CollectCoverage=true /p:Threshold=80
+      
+
+  # JOB 2: Call the Gold Path Template
+  deploy-dev:
+    needs: test-and-verify # WAIT for tests to pass
+    # Reference the central repo: owner/repo/path/filename@ref
+    uses: my-org/devops-templates/.github/workflows/reusable-deploy.yaml@main
+    with:
+      environment: development
+      service_name: test-service
+      project_id: omer-playground-440310
+      region: europe-west3
+      registry_name: archon-unity
+      # Runtime service account 
+      runtime_service_account: "backend-runtime@archonunity-dev.iam.gserviceaccount.com"
+      # Dynamic Environment Variables needs to be configured by developer
+      env_vars: |
+        ENVIRONMENT=Development
+        LOG_LEVEL=Debug
+    secrets:
+      # Pass the Organization Level Secrets
+      WIF_PROVIDER: ${{ secrets.ORG_WIF_PROVIDER }}
+      CI_SERVICE_ACCOUNT: ${{ secrets.ORG_CI_BUILDER_EMAIL }}
