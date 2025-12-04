@@ -38,11 +38,11 @@ jobs:
     with:
       environment: development
       service_name: test-service
-      project_id: omer-playground-440310
+      project_id: archonunity-staging
       region: europe-west3
-      registry_name: archon-unity
+      registry_name: archon-devops-test
       # Runtime service account 
-      runtime_service_account: "backend-runtime@archonunity-dev.iam.gserviceaccount.com"
+      runtime_service_account: "archonunity-backend@archonunity-staging.iam.gserviceaccount.com"
       # Dynamic Environment Variables needs to be configured by developer
       # env_vars: |
         # ENVIRONMENT=Development
